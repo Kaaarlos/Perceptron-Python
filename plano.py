@@ -2,6 +2,7 @@ import tkinter
 import turtle
 from math import e
 
+W0 = 1
 W1 = 1
 W2 = 1
 B  = -1.5
@@ -28,7 +29,7 @@ def entrada_datos():
 
 def validar_color(x,y):
 
-    result = (x*W1)+(y*W2)+B
+    result = (W0*B)+(x*W1)+(y*W2)
     resultf = 1/(1+e**-result)
     print(resultf)
 
@@ -39,9 +40,6 @@ def validar_color(x,y):
 
 
 entrada1  =tkinter.Button(ventana, text = "Poner", command = entrada_datos)
-entrada1.pack()
-
-entrada1  =tkinter.Button(ventana, text = "Calcular" command = draw_line)
 entrada1.pack()
 
 def draw_cartesian_plane():
@@ -66,29 +64,43 @@ def draw_cartesian_plane():
             pen.dot(10, "blue")
         else:
             pen.dot(10, "red")
+        
+        y1 = (-B - W1 * x) / W2
+        y2  = (-B - W1 * y) / W2
+        turtle.penup()
+        turtle.goto(x, y1)
+        turtle.pendown()
+        turtle.goto(y, y2)
+        turtle.done()
         print(x,y)
     window.onclick(on_click)
 
 
-def draw_point(x1,y1):
+def draw_point(x1,x2):
     window = turtle.Screen()
     pen = turtle.Turtle()
     pen.penup()
-    pen.goto(x1, y1)
+    pen.goto(x1, x2)
     pen.pendown()
-    if validar_color(x1,y1):
+    if validar_color(x1,x2):
         pen.dot(10, "blue")
     else:
         pen.dot(10, "red")
 
-def draw_line(x1,y1):
-    window = turtle.Screen()
-    pen = turtle.Turtle()
-    pen.penup()
-    pen.goto(x1, y1)
-    pen.pendown()
+    y1 = (-B - W1 * x1) / W2
+    y2  = (-B - W1 * x2) / W2
+    turtle.penup()
+    turtle.goto(x1, y1)
+    turtle.pendown()
+    turtle.goto(x2, y2)
+    turtle.done()
 
-
+# def draw_line(x1,y1):
+#     window = turtle.Screen()
+#     pen = turtle.Turtle()
+#     pen.penup()
+#     pen.goto(x1, y1)
+#     pen.pendown()
 
 draw_cartesian_plane()
 ventana.mainloop()
